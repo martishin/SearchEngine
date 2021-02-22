@@ -1,12 +1,12 @@
 # SearchEngine
 
-Run tests: 
+Run tests:   
 `gradle test`
 
-Run indexer:
+Run indexer:  
 `gradle run --args " --idx=./index --index --dir=./"`
 
-Run query processor 
+Run query processor:   
 `gradle run --args " --idx=./index --query"`
 <br>
 <br>
