@@ -11,15 +11,15 @@ Run query processor:
 <br>
 <br>
 > usage: [-h] --idx IDX --index [--dir DIR]
-> 
-> required arguments:
->  --idx IDX   index location
+>   
+> required arguments:  
+>  --idx IDX   index location  
 >
->  --index,    mode: index or query
->  --query
->
->
-> optional arguments:
->  -h, --help  show this help message and exit
->
->  --dir DIR   directory for search
+>  --index,    mode: index or query  
+>  --query  
+>  
+>  
+> optional arguments:  
+>  -h, --help  show this help message and exit  
+>  
+>  --dir DIR   directory for search  
