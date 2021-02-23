@@ -3,6 +3,9 @@
  */
 package com.ttymonkey.search
 
+import kotlinx.serialization.ExperimentalSerializationApi
+
+@ExperimentalSerializationApi
 fun main(args: Array<String>) {
     App(args).run()
 }
