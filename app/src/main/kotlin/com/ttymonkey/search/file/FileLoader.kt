@@ -19,8 +19,8 @@ class FileLoader(baseDirectory: File, private val index: InvertedIndex) {
         files.forEach { file ->
             launch(Dispatchers.IO) {
                 log.info("Started parsing file {}", file)
-                val tokens = async(Dispatchers.IO) { TextProcessor.processFile(file) }
-                index.addTokens(file, tokens.await())
+                val tokens = TextProcessor.processFile(file)
+                index.addTokens(file, tokens)
                 log.info("Finished parsing file {}", file)
             }
         }
