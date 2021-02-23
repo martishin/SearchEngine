@@ -13,8 +13,8 @@ typealias Document = String
 
 @Serializable
 class InvertedIndex {
-    private var index: MutableMap<String, MutableMap<DocumentId, MutableList<Position>>> = mutableMapOf()
-    private val documentsIndex: MutableMap<DocumentId, Document> = mutableMapOf()
+    private var index: MutableMap<String, MutableMap<DocumentId, MutableList<Position>>> = hashMapOf()
+    private val documentsIndex: MutableMap<DocumentId, Document> = hashMapOf()
 
     @Transient
     private val currentDocumentId: AtomicInteger = AtomicInteger(1)
@@ -30,7 +30,7 @@ class InvertedIndex {
         tokens.forEach {
             ++position
             if (!index.containsKey(it)) {
-                index[it] = mutableMapOf()
+                index[it] = hashMapOf()
             }
 
             if (index[it]!!.containsKey(documentId)) {
@@ -49,7 +49,7 @@ class InvertedIndex {
         var previousTokenToDocuments = getTokenPositions(tokens[0])
         for (idx in 1 until tokens.size) {
             val currentTokenToDocuments = getTokenPositions(tokens[idx])
-            val continuousTokenPositions : MutableMap<DocumentId, MutableList<Position>> = mutableMapOf()
+            val continuousTokenPositions : MutableMap<DocumentId, MutableList<Position>> = hashMapOf()
 
             val documentsIntersection = previousTokenToDocuments.keys.intersect(currentTokenToDocuments.keys)
 
@@ -84,7 +84,7 @@ class InvertedIndex {
             previousTokenToDocuments = continuousTokenPositions
         }
 
-        val documentsPositions : MutableMap<Document, List<Position>> = mutableMapOf()
+        val documentsPositions : MutableMap<Document, List<Position>> = hashMapOf()
         previousTokenToDocuments.forEach { (documentId, positions) ->
             documentsPositions[documentsIndex[documentId]!!] = positions.map{ it - tokens.size + 1  }
         }
@@ -93,6 +93,6 @@ class InvertedIndex {
     }
 
     private fun getTokenPositions(token: String): Map<DocumentId, List<Position>>{
-        return index[token] ?: mutableMapOf()
+        return index[token] ?: hashMapOf()
     }
 }

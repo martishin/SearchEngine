@@ -22,6 +22,6 @@ class QueryProcessor(private val index: InvertedIndex) {
 
         log.info("Finished processing query: {}", query)
 
-         searchResults
+        searchResults
     }
 }
