@@ -26,17 +26,15 @@ class InvertedIndex {
         val documentId = currentDocumentId.getAndIncrement()
         documentsIndex[documentId] = file.toString()
 
-        var position = 0
-        tokens.forEach {
-            ++position
-            if (!index.containsKey(it)) {
-                index[it] = hashMapOf()
+        tokens.forEachIndexed { idx, token ->
+            if (!index.containsKey(token)) {
+                index[token] = hashMapOf()
             }
 
-            if (index[it]!!.containsKey(documentId)) {
-                index[it]!![documentId]?.add(position)
+            if (index[token]!!.containsKey(documentId)) {
+                index[token]!![documentId]?.add(idx + 1)
             } else {
-                index[it]!![documentId] = mutableListOf(position)
+                index[token]!![documentId] = mutableListOf(idx + 1)
             }
         }
     }
