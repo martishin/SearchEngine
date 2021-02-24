@@ -22,10 +22,8 @@ object TextProcessor {
     }
 
     private fun applyFilters(tokens: List<String>): List<String> {
-        var tokensAfterFilters: List<String> = tokens
-        filters.forEach {
-            tokensAfterFilters = it.process(tokensAfterFilters)
+        return filters.fold(tokens) { tokensAfterFilters, filter ->
+            filter.process(tokensAfterFilters)
         }
-        return tokensAfterFilters
     }
 }
