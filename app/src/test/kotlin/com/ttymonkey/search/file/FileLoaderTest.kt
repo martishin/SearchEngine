@@ -21,12 +21,10 @@ class FileLoaderTest {
 
     @Test
     fun testCancel() {
-        runBlocking {
-            fileLoader.load()
-            fileLoader.cancel()
-        }
+        val fileLoaderJob = fileLoader.load()
+        fileLoader.cancel()
 
-        assertEquals(0, index.getPositions(listOf("hello")).size)
+        assertEquals(true, fileLoaderJob.isCancelled)
     }
 
     @Test

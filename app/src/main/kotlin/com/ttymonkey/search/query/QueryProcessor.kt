@@ -13,8 +13,8 @@ class QueryProcessor(private val index: InvertedIndex) {
         log.info("Started processing query: {}", query)
         val searchResults: MutableList<SearchResult> = mutableListOf()
 
-        val tokens = async { TextProcessor.process(query) }
-        val documentsPositions = async { index.getPositions(tokens.await()) }
+        val tokens = TextProcessor.process(query)
+        val documentsPositions = async { index.getPositions(tokens) }
 
         documentsPositions.await().forEach { (document, positions) ->
             searchResults.add(SearchResult(document, positions))

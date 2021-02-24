@@ -5,8 +5,10 @@ import com.ttymonkey.search.index.InvertedIndex
 import com.ttymonkey.search.index.InvertedIndexDumper
 import com.ttymonkey.search.query.QueryProcessor
 import com.ttymonkey.search.utils.AppArgs
+import com.ttymonkey.search.utils.ConsoleClient
 import com.ttymonkey.search.utils.RunMode
 import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.mainBody
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import mu.KotlinLogging
@@ -17,7 +19,7 @@ private val log = KotlinLogging.logger {}
 
 class App (private val args: Array<String>){
     @ExperimentalSerializationApi
-    fun run() = runBlocking {
+    fun run() = mainBody {
         ArgParser(args).parseInto(::AppArgs).run {
             val indexFile = File(index)
             val searchDirectory = File(directory)
@@ -34,19 +36,15 @@ class App (private val args: Array<String>){
 
             if (mode == RunMode.INDEX) {
                 val index = InvertedIndex()
-                val fileLoader = FileLoader(searchDirectory, index)
-                fileLoader.load().join()
+                runBlocking {
+                    FileLoader(searchDirectory, index).load().join()
+                }
                 InvertedIndexDumper.dump(indexFile, index)
             } else {
                 val index = InvertedIndexDumper.load(indexFile)
                 val queryProcessor = QueryProcessor(index)
 
-                listOf("dump", "query", "load").forEach {
-                    launch {
-                        val response = queryProcessor.process(it)
-                        println("$it: $response")
-                    }
-                }
+                ConsoleClient(10, queryProcessor).run()
             }
         }
     }

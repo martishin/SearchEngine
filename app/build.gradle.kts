@@ -54,3 +54,7 @@ application {
     // Define the main class for the application.
     mainClass.set("com.ttymonkey.search.MainKt")
 }
+
+val run by tasks.getting(JavaExec::class) {
+    standardInput = System.`in`
+}
