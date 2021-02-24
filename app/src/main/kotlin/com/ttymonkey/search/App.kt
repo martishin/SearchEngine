@@ -7,6 +7,7 @@ import com.ttymonkey.search.query.QueryProcessor
 import com.ttymonkey.search.utils.AppArgs
 import com.ttymonkey.search.utils.ConsoleClient
 import com.ttymonkey.search.utils.RunMode
+import com.ttymonkey.search.utils.exhaustive
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
 import kotlinx.coroutines.*
@@ -34,18 +35,21 @@ class App (private val args: Array<String>){
                 exitProcess(1)
             }
 
-            if (mode == RunMode.INDEX) {
-                val index = InvertedIndex()
-                runBlocking {
-                    FileLoader(searchDirectory, index).load().join()
+            when (mode) {
+                RunMode.INDEX -> {
+                    val index = InvertedIndex()
+                    runBlocking {
+                        FileLoader(searchDirectory, index).load().join()
+                    }
+                    InvertedIndexDumper.dump(indexFile, index)
                 }
-                InvertedIndexDumper.dump(indexFile, index)
-            } else {
-                val index = InvertedIndexDumper.load(indexFile)
-                val queryProcessor = QueryProcessor(index)
+                RunMode.QUERY -> {
+                    val index = InvertedIndexDumper.load(indexFile)
+                    val queryProcessor = QueryProcessor(index)
 
-                ConsoleClient(10, queryProcessor).run()
-            }
+                    ConsoleClient(10, queryProcessor).run()
+                }
+            }.exhaustive
         }
     }
 }
