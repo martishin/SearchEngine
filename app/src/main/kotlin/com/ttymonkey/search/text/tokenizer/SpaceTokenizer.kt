@@ -1,9 +1,12 @@
 package com.ttymonkey.search.text.tokenizer
 
 object SpaceTokenizer : Tokenizer {
+    private val PunctuationMarksRe = Regex("""\p{Punct}+""")
+    private val SpaceRe = Regex("""\s+""")
+
     fun tokenize(string: String): List<String> = string
-            .replace(Regex("""\p{Punct}+"""), " ")
-            .split(Regex("""\s+"""))
+            .replace(PunctuationMarksRe, " ")
+            .split(SpaceRe)
             .filter { !it.isEmpty() }
             .toList()
 }
