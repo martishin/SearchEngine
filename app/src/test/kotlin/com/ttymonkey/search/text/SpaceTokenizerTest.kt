@@ -1,4 +1,4 @@
-package com.ttymonkey.search.text.tokenizer
+package com.ttymonkey.search.text
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -24,7 +24,7 @@ class FileLoader(baseDirectory: File, private val index: InvertedIndex) {
             files.forEach { file ->
                 launch {
                     log.info("Started parsing file {}", file)
-                    val tokens = TextProcessor.processFile(file)
+                    val tokens = FileReader.read(file)
                     index.addTokens(file, tokens)
                     val remainingFilesCount = remainingFiles.decrementAndGet()
                     log.info("Finished parsing file {}, remaining files: {}", file,remainingFilesCount)
