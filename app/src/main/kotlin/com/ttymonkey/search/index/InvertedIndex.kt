@@ -24,7 +24,7 @@ class InvertedIndex {
 
     fun addTokens(file: File, tokens: List<String>) = lock.write {
         val documentId = currentDocumentId.getAndIncrement()
-        documentsIndex[documentId] = file.toString()
+        documentsIndex[documentId] = file.path
 
         tokens.forEachIndexed { idx, token ->
             if (!index.containsKey(token)) {

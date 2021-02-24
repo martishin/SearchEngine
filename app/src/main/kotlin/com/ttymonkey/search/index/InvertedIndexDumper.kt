@@ -17,7 +17,7 @@ object InvertedIndexDumper {
         try {
             file.writeBytes(bytes)
         } catch (e: IOException) {
-            log.error("Error happened when dumping index to file {}", file.toString(), e)
+            log.error("Error happened when dumping index to file {}", file.path, e)
             throw e
         }
     }
@@ -28,7 +28,7 @@ object InvertedIndexDumper {
             val bytes = file.readBytes()
             return ProtoBuf.decodeFromByteArray(bytes)
         } catch (e: IOException) {
-            log.error("Error happened when reading index from file {}", file.toString(), e)
+            log.error("Error happened when reading index from file {}", file.path, e)
             throw e
         }
     }

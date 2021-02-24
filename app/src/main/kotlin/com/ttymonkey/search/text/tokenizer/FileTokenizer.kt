@@ -23,7 +23,7 @@ object FileTokenizer {
 
             reader.close()
         } catch (e: IOException) {
-            log.error("Error happened when reading from file {}", file.toString(), e)
+            log.error("Error happened when reading from file {}", file.path, e)
         }
 
         return tokens
