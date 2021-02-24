@@ -1,6 +1,6 @@
 package com.ttymonkey.search.text.tokenizer
 
-object SpaceTokenizer : Tokenizer {
+object SpaceTokenizer {
     private val PunctuationMarksRe = Regex("""\p{Punct}+""")
     private val SpaceRe = Regex("""\s+""")
 
