@@ -30,7 +30,7 @@ class App (private val args: Array<String>){
             }
 
             if (searchDirectory.isFile) {
-                log.error("search directory cannot be an index")
+                log.error("search directory cannot be a file")
                 exitProcess(1)
             }
 
