@@ -1,6 +1,7 @@
 package com.ttymonkey.search.query
 
 import com.ttymonkey.search.index.InvertedIndex
+import com.ttymonkey.search.index.Position
 import com.ttymonkey.search.text.TokenizerResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -20,6 +21,6 @@ class QueryProcessorTest {
 
         assertEquals(1, searchResults.size)
         assertEquals(file1.path, searchResults[0].document)
-        assertEquals(listOf(Triple(1, 1, 1)), searchResults[0].positions)
+        assertEquals(listOf(Position(1, 1, 1)), searchResults[0].positions)
     }
 }

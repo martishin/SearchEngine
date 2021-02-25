@@ -12,19 +12,23 @@ typealias Document = String
 
 @Serializable
 class InvertedIndex {
-    private var index = hashMapOf<String, MutableMap<Document, MutableList<Position>>>()
+    private var index = hashMapOf<String, MutableMap<Document, List<Position>>>()
 
     @Transient
     private val lock = ReentrantReadWriteLock()
 
     fun addTokens(file: File, tokens: List<TokenizerResult>) = lock.write {
         var position = 1
+        val tokensToPositions = hashMapOf<String, MutableList<Position>>()
+
         tokens.forEachIndexed { row, tokenizerResult ->
             tokenizerResult.tokens.forEachIndexed { idx, token ->
-                index.getOrPut(token, { hashMapOf() })
-                        .getOrPut(file.path, { mutableListOf() })
-                        .add(Triple(position++, row + 1, tokenizerResult.positions[idx]))
+                tokensToPositions.getOrPut(token, { mutableListOf() }).add(Position(position++, row + 1, tokenizerResult.positions[idx]))
             }
+        }
+
+        tokensToPositions.forEach {
+            index.getOrPut(it.key, { hashMapOf() })[file.path] = it.value
         }
     }
 
