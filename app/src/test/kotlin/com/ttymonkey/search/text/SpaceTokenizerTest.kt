@@ -4,19 +4,33 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SpaceTokenizerTest {
+    @Test fun testWord() {
+        val result = SpaceTokenizer.tokenize("Hello")
+        assertEquals(listOf("Hello"), result.tokens)
+        assertEquals(listOf(1), result.positions)
+    }
+
     @Test fun testSpaces() {
-        assertEquals(listOf("Hello", "World"), SpaceTokenizer.tokenize("Hello  World"))
+        val result = SpaceTokenizer.tokenize("Hello  World")
+        assertEquals(listOf("Hello", "World"), result.tokens)
+        assertEquals(listOf(1, 8), result.positions)
     }
 
     @Test fun testCharacters() {
-        assertEquals(listOf("Hello", "World"), SpaceTokenizer.tokenize("Hello, World!"))
+        val result = SpaceTokenizer.tokenize("Hello, World!")
+        assertEquals(listOf("Hello", "World"), result.tokens)
+        assertEquals(listOf(1, 8), result.positions)
     }
 
     @Test fun testExtraSpaces() {
-        assertEquals(listOf("Hello"), SpaceTokenizer.tokenize(" Hello "))
+        val result = SpaceTokenizer.tokenize(" Hello ")
+        assertEquals(listOf("Hello"), result.tokens)
+        assertEquals(listOf(2), result.positions)
     }
 
     @Test fun testCharactersInsideWords() {
-        assertEquals(listOf("test", "Hello"), SpaceTokenizer.tokenize("test.Hello"))
+        val result = SpaceTokenizer.tokenize("test.Hello")
+        assertEquals(listOf("test", "Hello"), result.tokens)
+        assertEquals(listOf(1, 6), result.positions)
     }
 }

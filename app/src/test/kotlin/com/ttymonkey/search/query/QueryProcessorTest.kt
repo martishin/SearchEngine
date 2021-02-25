@@ -1,6 +1,7 @@
 package com.ttymonkey.search.query
 
 import com.ttymonkey.search.index.InvertedIndex
+import com.ttymonkey.search.text.TokenizerResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.io.File
@@ -13,12 +14,12 @@ class QueryProcessorTest {
 
     @Test
     fun testProcess() {
-        index.addTokens(file1, listOf("hello", "world"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world"), listOf(1, 7))))
 
         val searchResults = runBlocking { queryProcessor.process("Hello") }
 
         assertEquals(1, searchResults.size)
         assertEquals(file1.path, searchResults[0].document)
-        assertEquals(listOf(1), searchResults[0].positions)
+        assertEquals(listOf(Triple(1, 1, 1)), searchResults[0].positions)
     }
 }

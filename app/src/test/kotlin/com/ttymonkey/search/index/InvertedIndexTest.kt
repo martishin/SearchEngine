@@ -1,5 +1,6 @@
 package com.ttymonkey.search.index
 
+import com.ttymonkey.search.text.TokenizerResult
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -11,58 +12,58 @@ class InvertedIndexTest {
 
     @Test
     fun testIndex() {
-        index.addTokens(file1, listOf("hello", "world"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world"), listOf(1, 10))))
 
-        assertEquals(mapOf(file1.path to listOf(1)), index.getPositions(listOf("hello")))
+        assertEquals(mapOf(file1.path to listOf(Triple(1, 1, 1))), index.getPositions(listOf("hello")))
     }
 
     @Test
     fun testMultipleFiles() {
-        index.addTokens(file1, listOf("hello", "world"))
-        index.addTokens(file2, listOf("world"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world"), listOf(1, 10))))
+        index.addTokens(file2, listOf(TokenizerResult(listOf("world"), listOf(1))))
 
-        assertEquals(mapOf(file1.path to listOf(2), file2.path to listOf(1)), index.getPositions(listOf("world")))
+        assertEquals(mapOf(file1.path to listOf(Triple(2, 1, 10)), file2.path to listOf(Triple(1, 1, 1))), index.getPositions(listOf("world")))
     }
 
     @Test
     fun testMultipleOccurrences() {
-        index.addTokens(file1, listOf("hello", "hello"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "hello"), listOf(1, 10))))
 
-        assertEquals(mapOf(file1.path to listOf(1, 2)), index.getPositions(listOf("hello")))
+        assertEquals(mapOf(file1.path to listOf(Triple(1, 1, 1), Triple(2, 1, 10))), index.getPositions(listOf("hello")))
     }
 
     @Test
     fun testEmpty() {
-        index.addTokens(file1, listOf("hello", "hello"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "hello"), listOf(1, 10))))
 
         assertEquals(mapOf(), index.getPositions(listOf("app")))
     }
 
     @Test
-    fun testMultipleTokens() {
-        index.addTokens(file1, listOf("hello", "world", "hello", "world"))
+    fun testMultipleRows() {
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world"), listOf(1, 10)), TokenizerResult(listOf("world", "hello"), listOf(1, 10))))
 
-        assertEquals(mapOf(file1.path to listOf(1, 3)), index.getPositions(listOf("hello", "world")))
+        assertEquals(mapOf(file1.path to listOf(Triple(1, 1, 1), Triple(4, 2, 10))), index.getPositions(listOf("hello")))
     }
 
     @Test
-    fun testMultipleSameTokens() {
-        index.addTokens(file1, listOf("hello", "hello", "hello", "hello"))
+    fun testMultipleTokens() {
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world", "hello", "world"), listOf(1, 10, 100, 1000))))
 
-        assertEquals(mapOf(file1.path to listOf(1, 2, 3)), index.getPositions(listOf("hello", "hello")))
+        assertEquals(mapOf(file1.path to listOf(Triple(1, 1, 1), Triple(3, 1, 100))), index.getPositions(listOf("hello", "world")))
     }
 
     @Test
     fun testMultipleTokensMultipleFiles() {
-        index.addTokens(file1, listOf("hello", "world", "hello", "world"))
-        index.addTokens(file2, listOf("hello", "world"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "world", "hello", "world"), listOf(1, 10, 100, 1000))))
+        index.addTokens(file2, listOf(TokenizerResult(listOf("hello", "world"), listOf(1, 10))))
 
-        assertEquals(mapOf(file1.path to listOf(1, 3), file2.path to listOf(1)), index.getPositions(listOf("hello", "world")))
+        assertEquals(mapOf(file1.path to listOf(Triple(1, 1, 1), Triple(3, 1, 100)), file2.path to listOf(Triple(1, 1, 1))), index.getPositions(listOf("hello", "world")))
     }
 
     @Test
     fun testMultipleTokensNoMatch() {
-        index.addTokens(file1, listOf("hello", "hello"))
+        index.addTokens(file1, listOf(TokenizerResult(listOf("hello", "hello"), listOf(1, 10))))
 
         assertEquals(mapOf(), index.getPositions(listOf("hello", "world")))
     }

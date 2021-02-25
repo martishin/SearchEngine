@@ -9,19 +9,19 @@ import mu.KotlinLogging
 private val log = KotlinLogging.logger {}
 
 class QueryProcessor(private val index: InvertedIndex) {
-    suspend fun process(query: String): List<SearchResult> = coroutineScope {
+    fun process(query: String): List<SearchResult> {
         log.info("Started processing query: {}", query)
         val searchResults: MutableList<SearchResult> = mutableListOf()
 
         val tokens = TextProcessor.process(query)
-        val documentsPositions = async { index.getPositions(tokens) }
+        val documentsPositions = index.getPositions(tokens.tokens)
 
-        documentsPositions.await().forEach { (document, positions) ->
+        documentsPositions.forEach { (document, positions) ->
             searchResults.add(SearchResult(document, positions))
         }
 
         log.info("Finished processing query: {}", query)
 
-        searchResults
+        return searchResults
     }
 }

@@ -1,5 +1,6 @@
 package com.ttymonkey.search.index
 
+import com.ttymonkey.search.text.TokenizerResult
 import kotlinx.serialization.ExperimentalSerializationApi
 import org.junit.Test
 import java.io.File
@@ -13,7 +14,7 @@ class InvertedIndexDumperTest {
     @ExperimentalSerializationApi
     @Test
     fun testDumpAndLoad() {
-        index.addTokens(file, listOf("Hello", "world"))
+        index.addTokens(file, listOf(TokenizerResult(listOf("Hello", "world"), listOf(1, 10))))
 
         val file = File.createTempFile("index.dump", null)
         file.deleteOnExit()

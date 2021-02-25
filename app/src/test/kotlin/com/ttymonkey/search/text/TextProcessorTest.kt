@@ -5,6 +5,6 @@ import kotlin.test.assertEquals
 
 class TextProcessorTest {
     @Test fun testProcessText() {
-        assertEquals(listOf("hello", "world"), TextProcessor.process("Hello  Worlds"))
+        assertEquals(TokenizerResult(listOf("hello", "world"), listOf(1, 8)), TextProcessor.process("Hello  Worlds"))
     }
 }

@@ -6,15 +6,11 @@ import com.ttymonkey.search.text.filter.StemmingFilter
 object TextProcessor {
     private val filters = listOf(LowerCaseFilter(), StemmingFilter())
 
-    fun process(string: String): List<String> {
-        val tokens = SpaceTokenizer.tokenize(string)
-
-        return applyFilters(tokens)
-    }
-
-    private fun applyFilters(tokens: List<String>): List<String> {
-        return filters.fold(tokens) { tokensAfterFilters, filter ->
+    fun process(string: String): TokenizerResult {
+        val tokenizerResult = SpaceTokenizer.tokenize(string)
+        tokenizerResult.tokens = filters.fold(tokenizerResult.tokens) { tokensAfterFilters, filter ->
             filter.process(tokensAfterFilters)
         }
+        return tokenizerResult
     }
 }
