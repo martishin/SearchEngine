@@ -10,7 +10,7 @@ import com.ttymonkey.search.utils.RunMode
 import com.ttymonkey.search.utils.exhaustive
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import mu.KotlinLogging
 import java.io.File
@@ -18,7 +18,7 @@ import kotlin.system.exitProcess
 
 private val log = KotlinLogging.logger {}
 
-class App (private val args: Array<String>){
+class App(private val args: Array<String>){
     @ExperimentalSerializationApi
     fun run() = mainBody {
         ArgParser(args).parseInto(::AppArgs).run {

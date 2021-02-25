@@ -27,8 +27,8 @@ class FileLoader(baseDirectory: File, private val index: InvertedIndex): Corouti
                     log.info("Started parsing file {}", file)
                     val tokens = FileReader.read(file)
                     index.addTokens(file, tokens)
-                    val remainingFilesCount = remainingFiles.decrementAndGet()
-                    log.info("Finished parsing file {}, remaining files: {}", file, remainingFilesCount)
+                    remainingFiles.decrementAndGet()
+                    log.info("Finished parsing file {}", file)
                 }
             }
         }
