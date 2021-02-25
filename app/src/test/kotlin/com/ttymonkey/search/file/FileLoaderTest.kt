@@ -2,6 +2,7 @@ package com.ttymonkey.search.file
 
 import com.ttymonkey.search.TestUtils
 import com.ttymonkey.search.index.InvertedIndex
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -16,15 +17,16 @@ class FileLoaderTest {
             fileLoader.load().join()
         }
 
+        assertEquals(true, fileLoader.coroutineContext.isActive)
         assertEquals(2, index.getPositions(listOf("hello")).size)
     }
 
     @Test
     fun testCancel() {
-        val fileLoaderJob = fileLoader.load()
+        fileLoader.load()
         fileLoader.cancel()
 
-        assertEquals(true, fileLoaderJob.isCancelled)
+        assertEquals(false, fileLoader.coroutineContext.isActive)
     }
 
     @Test

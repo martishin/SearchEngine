@@ -2,8 +2,6 @@ package com.ttymonkey.search.query
 
 import com.ttymonkey.search.index.InvertedIndex
 import com.ttymonkey.search.text.TextProcessor
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger {}
@@ -11,7 +9,7 @@ private val log = KotlinLogging.logger {}
 class QueryProcessor(private val index: InvertedIndex) {
     fun process(query: String): List<SearchResult> {
         log.info("Started processing query: {}", query)
-        val searchResults: MutableList<SearchResult> = mutableListOf()
+        val searchResults = mutableListOf<SearchResult>()
 
         val tokens = TextProcessor.process(query)
         val documentsPositions = index.getPositions(tokens.tokens)

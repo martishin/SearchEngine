@@ -6,7 +6,6 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 import kotlinx.serialization.*
 import java.io.File
-import java.util.*
 
 typealias Position = Triple<Int, Int, Int>
 typealias Document = String
@@ -91,16 +90,5 @@ class InvertedIndex {
 
     private fun getTokenPositions(token: String): Map<Document, List<Position>> = lock.read {
         return index[token] ?: hashMapOf()
-    }
-
-    private fun findParent(tokens: List<String>, document: Document, position: Position): Position {
-        var pos = position
-        for (step in tokens.size - 2 downTo 0) {
-            val idx = index[tokens[step]]?.get(document)?.binarySearch{
-                pos.first - it.first
-            }
-            pos = idx?.let { index[tokens[step]]?.get(document)?.get(it) } !!
-        }
-        return pos
     }
 }
