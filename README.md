@@ -1,5 +1,8 @@
 # SearchEngine
 
+Implementation of full-text search engine.
+It consist of two parts: text index builder and search query executor.
+
 Run tests:   
 `gradle test`
 
