@@ -1,7 +1,7 @@
 # SearchEngine
 
 Implementation of a full-text on-disk search engine, consisting of two parts: 
-* text index builder
+* index builder
 * search query executor
 
 ## Running Locally
