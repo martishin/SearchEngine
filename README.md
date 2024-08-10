@@ -1,7 +1,8 @@
 # SearchEngine
 
-Implementation of full-text search engine.   
-It consist of two parts: text index builder and search query executor.
+Implementation of a full-text on-disk search engine, consisting of two parts: 
+* text index builder
+* search query executor
 
 ## Running Locally
 * Build the index: `gradle run --args " --idx=./index --index --dir=./"` 
